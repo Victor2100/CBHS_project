@@ -168,7 +168,7 @@
                 $('output#Z-score').val(calculation(age,variable,Measured,BSA)[0]);
 
                 $(".container").show();
-                updategraf(mychart,age,variable,Measured);
+                updategraf(mychart,age,variable,Measured,BSA);
               };
             });
           });
@@ -484,7 +484,7 @@
             return [a1, b1, a2, b2, a3, b3, a4];
           };
 
-          function updategraf(mychart,age,variable,Measured){
+          function updategraf(mychart,age,variable,Measured,BSA){
             var labels = new Array(35).fill(0);
             for(var i=0;i<1001;i++){
               //i<1001
@@ -499,11 +499,18 @@
               labelname2 = '-5 z-score away from the mean';
             }
 
+            const findValue = (element) => element == parseFloat(BSA.toFixed(3));
+            console.log(labels.findIndex(findValue));
+
+            var yourPoint = new Array(labels.length).fill(NaN);
+            yourPoint[labels.findIndex(findValue)] = parseInt(Measured);
+            console.log(yourPoint);
+
             var ZXvalues = new Array(labels.length).fill(0);
             var MXvalues1 = new Array(labels.length).fill(0);
             var MXvalues2 = new Array(labels.length).fill(0);
             var MXvalues3 = new Array(labels.length).fill(0);
-
+          
             for (var i=0;i<labels.length;i++){
               ZXvalues[i] = calculation(age,variable,Measured,labels[i])[0];
               MXvalues1[i] = calculation(age,variable,Measured,labels[i])[1];
@@ -517,6 +524,8 @@
 
             mychart.data.datasets[0].label = labelname;
             mychart.data.datasets[1].label = labelname2;
+
+            mychart.data.datasets[3].data = yourPoint;
 
             mychart.update();
           };
@@ -539,20 +548,31 @@
               labels: labels,
               datasets:[
                 {
+                  type: 'line',
                   label: '5 z-score away from the mean',
                   data: MXvalues1,
                   borderColor: '#FF0000',
                   order: 1
                 },{
+                  type: 'line',
                   label: '-5 z-score away from the mean',
                   data: MXvalues2,
                   borderColor: '#FF0000',
                   order: 2
                 },{
+                  type: 'line',
                   label: 'Measured value given z = 0.01',
                   data: MXvalues3,
                   borderColor: '#00FF00',
                   order: 3
+                },{
+                  type: 'line',
+                  label: 'Your data point',
+                  data: BSA,
+                  borderColor: '#000000',
+                  pointRadius: 5,
+                  order: 4,
+                  showLine: false
                 }
                 // {label: 'Z scores', data: ZXvalues,  borderColor: '#FF0000',  order: 1 },
               ],
