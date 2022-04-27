@@ -257,7 +257,7 @@
             results[1] = calculation_giving_z_score(z,mu_BSA,sig_BSA,gam_BSA,the_BSA,1);
             results[2] = calculation_giving_z_score(z,mu_BSA,sig_BSA,gam_BSA,the_BSA,-1);
             results[3] = calculation_giving_z_score(0.01,mu_BSA,sig_BSA,gam_BSA,the_BSA,1);
-            console.log(results[1]);
+            //console.log(results[1]);
             return results;
           };
 
@@ -486,13 +486,19 @@
 
           function updategraf(mychart,age,variable,Measured){
             var labels = new Array(35).fill(0);
-            for(var i=0;i<35;i++){
+            for(var i=0;i<1001;i++){
               //i<1001
-              //labels[i-1]=i/1000;
-              labels[i]=0.16+0.01*i;
+              labels[i-1]=i/1000;
             };
-            //var labels = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0];
-            
+
+            if(variable=="2"){
+              labelname = '2 z-score away from the mean';
+              labelname2 = '-2 z-score away from the mean';
+            }else{
+              labelname = '5 z-score away from the mean';
+              labelname2 = '-5 z-score away from the mean';
+            }
+
             var ZXvalues = new Array(labels.length).fill(0);
             var MXvalues1 = new Array(labels.length).fill(0);
             var MXvalues2 = new Array(labels.length).fill(0);
@@ -505,19 +511,23 @@
               MXvalues3[i] = calculation(age,variable,Measured,labels[i])[3];
             }
              
-            //mychart.data.datasets[0].data = ZXvalues;
             mychart.data.datasets[0].data = MXvalues1;
             mychart.data.datasets[1].data = MXvalues2;
             mychart.data.datasets[2].data = MXvalues3;
+
+            mychart.data.datasets[0].label = labelname;
+            mychart.data.datasets[1].label = labelname2;
+
             mychart.update();
           };
 
           function createmygraf(){
             const ctx = document.getElementById('mychart').getContext('2d');
             var labels = new Array(35).fill(0);
-            for(var i=1;i<35;i++){
-              //labels[i-1]=i/1000;
-              labels[i]=0.16+0.01*i;
+            var BSA = 0;
+            for(var i=1;i<1001;i++){
+              labels[i-1]=i/1000;
+              //labels[i]=0.16+0.01*i;
             };
             //var labels = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0];
             var ZXvalues = new Array(labels.length).fill(0);
@@ -529,23 +539,23 @@
               labels: labels,
               datasets:[
                 {
-                  label: 'Measured value given z = 3',
+                  label: '5 z-score away from the mean',
                   data: MXvalues1,
                   borderColor: '#FF0000',
                   order: 1
                 },{
-                  label: 'Measured value given z = -3',
+                  label: '-5 z-score away from the mean',
                   data: MXvalues2,
-                  borderColor: '#0d00ff',
+                  borderColor: '#FF0000',
                   order: 2
                 },{
                   label: 'Measured value given z = 0.01',
                   data: MXvalues3,
-                  borderColor: '#fff700',
-                  order: 2
+                  borderColor: '#00FF00',
+                  order: 3
                 }
                 // {label: 'Z scores', data: ZXvalues,  borderColor: '#FF0000',  order: 1 },
-              ]
+              ],
             };
 
             const mychart = new Chart(ctx, {
@@ -554,9 +564,10 @@
               options: {
                 scales: {
                   yAxes: {
+                    type: 'linear',
                     title: {
                         display: true,
-                        text: 'Z scores',
+                        text: 'Measured',
                         font: {
                             size: 15
                         }
@@ -566,6 +577,7 @@
                     }
                   },
                   xAxes: {
+                    type: 'linear',
                     title: {
                         display: true,
                         text: 'Body surface area',
@@ -579,15 +591,15 @@
                 plugins: {
                   title: {
                     display: true,
-                    text: (ctx) => 'Z-scores values for different BSA',//'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
+                    text: (ctx) => 'Measured values for different BSA',//'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
                   }
-                },
+                }, 
                 elements: {
                   point: {
                     radius: 0
                   }
                 }
-              }
+              },
             });
             return mychart;
           };
