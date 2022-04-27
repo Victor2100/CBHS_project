@@ -127,7 +127,7 @@
                 <!-- The button used to copy the text -->
                 <div class="d-grid gap-2 d-md-block text-center">
                   <br>
-                  <input class="btn btn-outline-primary" type="copy-text" value="Copy text" id="btn2" onclick="myFunction()"></button>
+                  <input class="btn btn-outline-primary" type="copy-text" value="Copy Z-score" id="btn2" onclick="myFunction()"></button>
                 </div>
               </div> 
             </div>
@@ -161,11 +161,11 @@
               var BSA = 0.024265*Math.pow(weight,0.51456)*Math.pow(height,0.3964);
 
               if(isNaN(height) || height.length == 0 || isNaN(weight) || weight.length == 0 || age == 0 || variable == 0 || isNaN(Measured) || Measured.length == 0){
-                alert("Some of the values are not validated. Pleace check if the height, weight, age, Group and Measured are correct.");
+                alert("Some of the values are not validated. Please check if the height, weight, age, Group and Measured are correct.");
               }else{
                 $(".panel2").show();
-                $('output#BSA').val(BSA);
-                $('output#Z-score').val(calculation(age,variable,Measured,BSA)[0]);
+                $('output#BSA').val(BSA.toFixed(2));
+                $('output#Z-score').val(calculation(age,variable,Measured,BSA)[0].toFixed(2));
 
                 $(".container").show();
                 updategraf(mychart,age,variable,Measured,BSA);
@@ -500,11 +500,11 @@
             }
 
             const findValue = (element) => element == parseFloat(BSA.toFixed(3));
-            console.log(labels.findIndex(findValue));
+            //console.log(labels.findIndex(findValue));
 
             var yourPoint = new Array(labels.length).fill(NaN);
             yourPoint[labels.findIndex(findValue)] = parseInt(Measured);
-            console.log(yourPoint);
+            //console.log(yourPoint);
 
             var ZXvalues = new Array(labels.length).fill(0);
             var MXvalues1 = new Array(labels.length).fill(0);
