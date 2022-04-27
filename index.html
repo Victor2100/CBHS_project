@@ -486,6 +486,8 @@
 
           function updategraf(mychart,age,variable,Measured,BSA){
             var labels = new Array(35).fill(0);
+            let value;
+            
             for(var i=0;i<1001;i++){
               //i<1001
               labels[i-1]=i/1000;
@@ -526,6 +528,25 @@
             mychart.data.datasets[1].label = labelname2;
 
             mychart.data.datasets[3].data = yourPoint;
+
+            switch (variable) {
+              case "1":
+                value = 'LVSd measured';
+                break;
+              case "2":
+                value = 'LVPWd measured';
+                break;
+              case "3":
+                value = 'LVIDd measured';
+                break;
+              case "4":
+                value = 'LVIDs measured';
+                break;
+              default:
+                value = 'Measured';
+
+            };
+            mychart.options.scales.yAxes.title.text = value;
 
             mychart.update();
           };
