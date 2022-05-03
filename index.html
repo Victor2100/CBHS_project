@@ -91,7 +91,7 @@
                   </div>
                 </div>
                 <div class="col">  
-                  <label for="Input">Measured</label>
+                  <label for="Input">Echocardiographic parameter value</label>
                   <input type="text" name="input" id="input" class="form-control">
                 </div>
                 <div class="col">
@@ -504,7 +504,7 @@
             const findValue = (element) => element == parseFloat(BSA.toFixed(3));
 
             var yourPoint = new Array(labels.length).fill(NaN);
-            yourPoint[labels.findIndex(findValue)] = parseInt(Measured);
+            yourPoint[labels.findIndex(findValue)] = parseFloat(Measured);
 
             var ZXvalues = new Array(labels.length).fill(0);
             var MXvalues1 = new Array(labels.length).fill(0);
@@ -527,6 +527,7 @@
 
             mychart.data.datasets[3].data = yourPoint;
 
+            console.log(yourPoint);
             switch (variable) {
               case "1":
                 value = 'IVSd measured [mm]';
@@ -608,7 +609,7 @@
                         display: true,
                         text: 'Measured',
                         font: {
-                            size: 15
+                            size: 20
                         }
                     },
                     ticks: {
@@ -621,7 +622,7 @@
                         display: true,
                         text: 'BSA [m\u00B2]',
                         font: {
-                            size: 15
+                            size: 20
                         }
                     }
                   } 
@@ -630,7 +631,10 @@
                 plugins: {
                   title: {
                     display: true,
-                    text: (ctx) => 'Measured values for different BSA',//'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
+                    text: (ctx) => 'Echocardiographic parameter values for different BSA',//'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
+                    font: {
+                      size: 20
+                    }
                   }
                 }, 
                 elements: {
