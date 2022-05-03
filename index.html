@@ -80,13 +80,13 @@
               <div class="row">
                 <div class="col">
                   <div class="form-group">
-                    <label for="Group">Group</label>
+                    <label for="Group">Echocardiographic parameter</label>
                     <select name="Group" id="Group" class="form-control">
                       <option value="0">Select Context...</option>
-                      <option value="1">IVSd</option>
-                      <option value="2">LVPWd</option>
-                      <option value="3">LVIDd</option>
-                      <option value="4">LVIDs</option>
+                      <option value="1">Interventricular septum in end-diastole (IVSd) [mm]</option>
+                      <option value="2">Left ventricular posterior wall in end-diastole (LVPWd) [mm]</option>
+                      <option value="3">Left ventricular internal diameter in end-diastole (LVIDd) [mm]</option>
+                      <option value="4">Left ventricular internal diameter in end-systole (LVIDs) [mm]</option>
                     </select>
                   </div>
                 </div>
@@ -529,16 +529,16 @@
 
             switch (variable) {
               case "1":
-                value = 'LVSd measured';
+                value = 'IVSd measured [mm]';
                 break;
               case "2":
-                value = 'LVPWd measured';
+                value = 'LVPWd measured [mm]';
                 break;
               case "3":
-                value = 'LVIDd measured';
+                value = 'LVIDd measured [mm]';
                 break;
               case "4":
-                value = 'LVIDs measured';
+                value = 'LVIDs measured [mm]';
                 break;
               default:
                 value = 'Measured';
@@ -619,7 +619,7 @@
                     type: 'linear',
                     title: {
                         display: true,
-                        text: 'Body surface area',
+                        text: 'Body surface area [m^2]',
                         font: {
                             size: 15
                         }
