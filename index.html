@@ -83,10 +83,10 @@
                     <label for="Group">Echocardiographic parameter</label>
                     <select name="Group" id="Group" class="form-control">
                       <option value="0">Select Context...</option>
-                      <option value="1">Interventricular septum in end-diastole (IVSd) [mm]</option>
-                      <option value="2">Left ventricular posterior wall in end-diastole (LVPWd) [mm]</option>
-                      <option value="3">Left ventricular internal diameter in end-diastole (LVIDd) [mm]</option>
-                      <option value="4">Left ventricular internal diameter in end-systole (LVIDs) [mm]</option>
+                      <option value="1">IVSd, Interventricular septum in end-diastole [mm]</option>
+                      <option value="2">LVPWd, Left ventricular posterior wall in end-diastole [mm]</option>
+                      <option value="3">LVIDd, Left ventricular internal diameter in end-diastole [mm]</option>
+                      <option value="4">LVIDs, Left ventricular internal diameter in end-systole [mm]</option>
                     </select>
                   </div>
                 </div>
@@ -116,7 +116,7 @@
           <div class="panel-body panel-padding my-custome-row">
             <div class="row">
               <div class="col">
-                <label for="BSA">BSA (m^2)</label>
+                <label for="BSA">Body surface area (Haycock) </label>
                 <output type="text" name="BSA" id="BSA" class="form-control">
               </div>
               <div class="col">
@@ -488,7 +488,7 @@
             var labels = new Array(35).fill(0);
             let value;
 
-            for(var i=0;i<1001;i++){
+            for(var i=0;i<501;i++){
               //i<1001
               labels[i-1]=i/1000;
             };
@@ -554,7 +554,7 @@
             var labels = new Array(35).fill(0);
             var BSA = 0;
             
-            for(var i=1;i<1001;i++){
+            for(var i=1;i<501;i++){
               labels[i-1]=i/1000;
             };
 
@@ -619,7 +619,7 @@
                     type: 'linear',
                     title: {
                         display: true,
-                        text: 'Body surface area [m^2]',
+                        text: 'BSA [m\u00B2]',
                         font: {
                             size: 15
                         }
