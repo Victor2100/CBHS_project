@@ -488,9 +488,13 @@
             var labels = new Array(35).fill(0);
             let value;
 
+            const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
+            labels = range(0.16, 0.35, 0.001);
+            console.log(labels);
+
             for(var i=0;i<501;i++){
               //i<1001
-              labels[i-1]=i/1000;
+              //labels[i-1]=i/1000;
             };
 
             if(variable=="2"){
@@ -555,8 +559,12 @@
             var labels = new Array(35).fill(0);
             var BSA = 0;
             
+            const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
+            labels = range(0.16, 0.35, 0.001);
+            console.log(labels);
+
             for(var i=1;i<501;i++){
-              labels[i-1]=i/1000;
+              //labels[i-1]=i/1000;
             };
 
             var ZXvalues = new Array(labels.length).fill(0);
