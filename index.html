@@ -194,7 +194,7 @@
                 var a3 = value[4];
                 var b3 = value[5];
                 var a4 = value[6];
-                var z = 5;
+                var z = 3;
                 break;
               case "2":
                 value = LVPWd_value_function(age);
@@ -216,7 +216,7 @@
                 var a3 = value[4];
                 var b3 = value[5];
                 var a4 = value[6];
-                var z = 5;
+                var z = 3;
                 break;
               case "4":
                 value = LVIDs_value_function(age);
@@ -227,7 +227,7 @@
                 var a3 = value[4];
                 var b3 = value[5];
                 var a4 = value[6];
-                var z = 5;
+                var z = 3;
                 break;
               default:
                 var a1 = 0;
@@ -496,8 +496,8 @@
               labelname = '2 z-score away from the mean';
               labelname2 = '-2 z-score away from the mean';
             }else{
-              labelname = '5 z-score away from the mean';
-              labelname2 = '-5 z-score away from the mean';
+              labelname = '3 z-score away from the mean';
+              labelname2 = '-3 z-score away from the mean';
             }
 
             const findValue = (element) => element == parseFloat(BSA.toFixed(3));
@@ -542,7 +542,6 @@
                 break;
               default:
                 value = 'Measured';
-
             };
             mychart.options.scales.yAxes.title.text = value;
 
@@ -572,13 +571,13 @@
               datasets:[
                 {
                   type: 'line',
-                  label: '5 z-score away from the mean',
+                  label: '3 z-score away from the mean',
                   data: MXvalues1,
                   borderColor: '#FF0000',
                   order: 1
                 },{
                   type: 'line',
-                  label: '-5 z-score away from the mean',
+                  label: '-3 z-score away from the mean',
                   data: MXvalues2,
                   borderColor: '#FF0000',
                   order: 2
