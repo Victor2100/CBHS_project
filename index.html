@@ -34,6 +34,14 @@
               width: 1000px;
               margin: auto;
             }
+            .error{
+            border:2px solid red;
+            }
+            .defaultInput{
+            width: 100px;
+            height:25px;
+            padding: 5px;
+            }
         </style>
         
        <!-- <div class="panel-body info panel-padding image">
@@ -51,16 +59,16 @@
             <div class="panel-body panel-padding my-custome-row">    
               <div class="row">
                 <div class="col">
-                  <label for="height">Height (cm)</label>
+                  <label for="height">Height [cm]</label>
                   <input type="text" name="height" id="height" class="form-control">
                 </div>
                 <div class="col">
-                  <label for="Weight">Weight (kg)</label>
+                  <label for="Weight">Weight [kg]</label>
                   <input type="text" name="Weight" id="Weight" class="form-control">
                 </div>
                 <div class="col">
                   <div class="form-group">
-                    <label for="Context">Age (Weeks)</label>
+                    <label for="Context">Age [Weeks]</label>
                       <select name="Context" id="Context" class="form-control">
                         <option value="0">Select Age...</option>
                         <option value="1">0-6</option>
@@ -78,15 +86,15 @@
                     <label for="Group">Echocardiographic parameter</label>
                     <select name="Group" id="Group" class="form-control">
                       <option value="0">Select Context...</option>
-                      <option value="1">IVSd, Interventricular septum in end-diastole [mm]</option>
-                      <option value="2">LVPWd, Left ventricular posterior wall in end-diastole [mm]</option>
-                      <option value="3">LVIDd, Left ventricular internal diameter in end-diastole [mm]</option>
-                      <option value="4">LVIDs, Left ventricular internal diameter in end-systole [mm]</option>
+                      <option value="1">IVSd, Interventricular septum in end-diastole</option>
+                      <option value="2">LVPWd, Left ventricular posterior wall in end-diastole</option>
+                      <option value="3">LVIDd, Left ventricular internal diameter in end-diastole</option>
+                      <option value="4">LVIDs, Left ventricular internal diameter in end-systole</option>
                     </select>
                   </div>
                 </div>
                 <div class="col">  
-                  <label for="Input">Echocardiographic parameter value</label>
+                  <label for="Input">Echocardiographic parameter value [mm]</label>
                   <input type="text" name="input" id="input" class="form-control">
                 </div>
                 <div class="col">
@@ -145,6 +153,12 @@
             $(".panel2").hide();
             //Click on the calculate Z-score buttom
             $('#btn1').on('click',function(e) {
+              $('input#height').removeClass('error');
+              $('input#Weight').removeClass('error');
+              $('#Context').removeClass('error');
+              $('#Group').removeClass('error');
+              $('input#input').removeClass('error');
+
               //alert('Button Clicked');
               e.preventDefault();
               var height = $('input#height').val();
@@ -156,10 +170,37 @@
               var BSA = 0.024265*Math.pow(weight,0.51456)*Math.pow(height,0.3964);
 
               if(isNaN(height) || height.length == 0 || isNaN(weight) || weight.length == 0 || age == 0 || variable == 0 || isNaN(Measured) || Measured.length == 0){
-                alert("Some of the values are not validated. Please check if the height, weight, age, Group and Measured are correct.");
+                alert("Some of the values are not validated. Please check if the height, weight, age, Group and Measured are correct. Remeber to use periods and not commas in the numbers.");
+                if(isNaN(height) || height.length == 0){
+                  //console.log("height error")
+                  $('input#height').addClass('error');
+                }
+                if(isNaN(weight) || weight.length == 0){
+                  $('input#Weight').addClass('error');
+                  //console.log("weight error")
+                }
+                if(age == 0){
+                  $('#Context').addClass('error');
+                  //console.log("age error")
+                }
+                if(variable == 0){
+                  $('#Group').addClass('error');
+                  //console.log("variable error")
+                }
+                if(isNaN(Measured) || Measured.length == 0){
+                  $('input#input').addClass('error');
+                  //console.log("Measured error")
+                }
+              
               }else{
+                $('input#height').removeClass('error');
+                $('input#Weight').removeClass('error');
+                $('#Context').removeClass('error');
+                $('#Group').removeClass('error');
+                $('input#input').removeClass('error');
+
                 $(".panel2").show();
-                $('output#BSA').val(BSA.toFixed(2));
+                $('output#BSA').val(BSA.toFixed(3));
                 $('output#Z-score').val(calculation(age,variable,Measured,BSA)[0].toFixed(2));
 
                 $(".container").show();
@@ -485,7 +526,9 @@
 
             const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
             labels = range(0.16, 0.35, 0.001);
-            console.log(labels);
+            labels = labels.map(a => a.toFixed(3));
+            
+            //console.log(labels);
 
             for(var i=0;i<501;i++){
               //i<1001
@@ -527,6 +570,10 @@
             mychart.data.datasets[3].data = yourPoint;
 
             console.log(yourPoint);
+            console.log(labels.findIndex(findValue));
+            console.log(labels);
+            console.log(parseFloat(BSA.toFixed(3)));
+
             switch (variable) {
               case "1":
                 value = 'IVSd measured [mm]';
@@ -555,7 +602,6 @@
             
             const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
             labels = range(0.16, 0.35, 0.001);
-            console.log(labels);
 
             for(var i=1;i<501;i++){
               //labels[i-1]=i/1000;
@@ -583,7 +629,7 @@
                   order: 2
                 },{
                   type: 'line',
-                  label: 'Measured value given z = 0.01',
+                  label: 'Mean value of measured value',
                   data: MXvalues3,
                   borderColor: '#00FF00',
                   order: 3
