@@ -68,7 +68,7 @@
                 </div>
                 <div class="col">
                   <div class="form-group">
-                    <label for="Context">Age [Weeks]</label>
+                    <label for="Context">Age [Days]</label>
                       <select name="Context" id="Context" class="form-control">
                         <option value="0">Select Age...</option>
                         <option value="1">0-6</option>
@@ -100,7 +100,7 @@
                 <div class="col">
                   <div class="d-grid gap-2 d-md-block text-center">
                     <br>
-                    <input class="btn btn-outline-primary" type="calculate" value="Calculate the Z scores" id="btn1"></button>
+                    <input class="btn btn-outline-primary" type="calculate" value="Calculate the Z-scores" id="btn1"></button>
                   </div>
                 </div>
               </div>
@@ -123,7 +123,7 @@
                 <output type="text" name="BSA" id="BSA" class="form-control">
               </div>
               <div class="col">
-                <label for="Z-score"> Z score</label>
+                <label for="Z-score"> Z-score</label>
                 <output type="text" name="Z-score" id="Z-score" class="form-control">
               </div>
               <div class="col">
@@ -682,6 +682,13 @@
                     text: (ctx) => 'Echocardiographic parameter values for different BSA',//'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
                     font: {
                       size: 20
+                    }
+                  },
+                  legend: {
+                    labels: {
+                      font: {
+                        size: 18
+                      }
                     }
                   }
                 }, 
