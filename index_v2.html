@@ -59,13 +59,32 @@
             <div class="panel-body panel-padding my-custome-row">    
               <div class="row">
                 <div class="col">
-                  <label for="height">Height [cm]</label>
+                  <label for="height">Height</label>
                   <input type="text" name="height" id="height" class="form-control">
                 </div>
                 <div class="col">
-                  <label for="Weight">Weight [kg]</label>
+                  <div class="form-group">
+                    <label for="unit_height">Unit for height</label>
+                      <select name="unit_height" id="unit_height" class="form-control">
+                        <option value="0">cm</option>
+                        <option value="1">inches</option>
+                      </select>
+                    </div>
+                  </div>
+                <div class="col">
+                  <label for="Weight">Weight</label>
                   <input type="text" name="Weight" id="Weight" class="form-control">
                 </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label for="unit_weight">Unit for weight</label>
+                      <select name="unit_weight" id="unit_weight" class="form-control">
+                        <option value="0">gram</option>
+                        <option value="1">pounds</option>
+                        <option value="2">kg</option>
+                      </select>
+                    </div>
+                  </div>
                 <div class="col">
                   <div class="form-group">
                     <label for="Context">Age [Days]</label>
@@ -93,8 +112,12 @@
                     </select>
                   </div>
                 </div>
+                <div class="col">
+                  <label for="EP_unit">Unit </label>
+                  <output type="text" name="EP_unit" id="EP_unit" class="form-control">
+                </div>
                 <div class="col">  
-                  <label for="Input">Echocardiographic parameter value [mm]</label>
+                  <label for="Input">Echocardiographic parameter value</label>
                   <input type="text" name="input" id="input" class="form-control">
                 </div>
                 <div class="col">
@@ -151,6 +174,20 @@
             $(".container").hide();
 
             $(".panel2").hide();
+            
+            const selectElement = document.querySelector("#Group");
+
+            selectElement.addEventListener('change', (event) => {
+              //const result = document.querySelector('.result');
+              //result.textContent = `You like ${event.target.value}`;
+              var variable_2 = $('#Group').val();
+              if(variable_2 > 0 && variable_2 < 5){
+                $('output#EP_unit').val("mm");
+              }else{
+                $('output#EP_unit').val("");
+              };
+            });
+
             //Click on the calculate Z-score buttom
             $('#btn1').on('click',function(e) {
               $('input#height').removeClass('error');
@@ -161,11 +198,41 @@
 
               //alert('Button Clicked');
               e.preventDefault();
-              var height = $('input#height').val();
-              var weight = $('input#Weight').val();
+              var height_2 = $('input#height').val();
+              var height_unit = $('#unit_height').val();
+              var weight_2 = $('input#Weight').val();
+              var weight_unit = $('#unit_weight').val();
               var age = $('#Context').val();
               var variable = $('#Group').val();
               var Measured = $('input#input').val();
+
+              switch(height_unit){
+                case "0":
+                  height = height_2;
+                  break;
+                case "1":
+                  height = 2.54*height_2;
+                  break;
+                default:
+                  height = height_2;
+              };
+
+              switch(weight_unit){
+                case "0":
+                  weight = weight_2/1000;
+                  break;
+                case "1":
+                  weight = weight_2*0.45359237;
+                  break;
+                case "2":
+                  weight = weight_2;
+                  break;
+                default:
+                  weight = weight_2/1000;
+              };
+              //console.log(variable);
+
+              //console.log(height);
 
               var BSA = 0.024265*Math.pow(weight,0.51456)*Math.pow(height,0.3964);
 
