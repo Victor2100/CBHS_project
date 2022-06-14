@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+        <title>Document</title>
+    </head>
+<body>
+
+        <style>
+            .my-custome-row {
+                background-color: azure;
+                height:  200px;
+                width: 1000px;
+                margin: auto;
+                margin-bottom: 1%;
+            }
+            .title {
+              background-color: rgb(187, 222, 243);
+              width: 1000px;
+              margin: auto;
+            }
+            .my-second-row{
+              height: 400px;
+              width: 500px;
+              margin: auto;
+            }
+            .image {
+              background-color: white;
+              width: 1000px;
+              margin: auto;
+            }
+            .error{
+            border:2px solid red;
+            }
+            .defaultInput{
+            width: 100px;
+            height:25px;
+            padding: 5px;
+            }
+        </style>
+        
+       <!-- <div class="panel-body info panel-padding image">
+            <img src="Copenhagen-Baby-Heart-logo-300x85.JPG">
+        </div> -->
+
+        <div class="panel panel info panel-margin title">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              Patient Info (only prototype, do not use in clinic)
+            </h3>
+          </div>
+       
+          <form id="form">
+            <div class="panel-body panel-padding my-custome-row">    
+              <div class="row">
+                <div class="col">
+                  <label for="height">Height [cm]</label>
+                  <input type="text" name="height" id="height" class="form-control">
+                </div>
+                <div class="col">
+                  <label for="Weight">Weight [kg]</label>
+                  <input type="text" name="Weight" id="Weight" class="form-control">
+                </div>
+                <div class="col">
+                  <div class="form-group">
+                    <label for="Context">Age [Days]</label>
+                      <select name="Context" id="Context" class="form-control">
+                        <option value="0">Select Age...</option>
+                        <option value="1">0-6</option>
+                        <option value="2">7-13</option>
+                        <option value="3">14-20</option>
+                        <option value="4">21-30</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              
+              <div class="row">
+                <div class="col">
+                  <div class="form-group">
+                    <label for="Group">Echocardiographic parameter</label>
+                    <select name="Group" id="Group" class="form-control">
+                      <option value="0">Select Context...</option>
+                      <option value="1">IVSd, Interventricular septum in end-diastole</option>
+                      <option value="2">LVPWd, Left ventricular posterior wall in end-diastole</option>
+                      <option value="3">LVIDd, Left ventricular internal diameter in end-diastole</option>
+                      <option value="4">LVIDs, Left ventricular internal diameter in end-systole</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col">  
+                  <label for="Input">Echocardiographic parameter value [mm]</label>
+                  <input type="text" name="input" id="input" class="form-control">
+                </div>
+                <div class="col">
+                  <div class="d-grid gap-2 d-md-block text-center">
+                    <br>
+                    <input class="btn btn-outline-primary" type="calculate" value="Calculate the Z-scores" id="btn1"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+      <div class="panel2 panel info panel-margin title" id="calculation-head">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Calculation Results
+          </h3>
+        </div>
+
+        <form action="" id="form-calculation">
+          <div class="panel-body panel-padding my-custome-row">
+            <div class="row">
+              <div class="col">
+                <label for="BSA">Body surface area (Haycock) </label>
+                <output type="text" name="BSA" id="BSA" class="form-control">
+              </div>
+              <div class="col">
+                <label for="Z-score"> Z-score</label>
+                <output type="text" name="Z-score" id="Z-score" class="form-control">
+              </div>
+              <div class="col">
+                <!-- The button used to copy the text -->
+                <div class="d-grid gap-2 d-md-block text-center">
+                  <br>
+                  <input class="btn btn-outline-primary" type="copy-text" value="Copy Z-score" id="btn2" onclick="myFunction()"></button>
+                </div>
+              </div> 
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="container">
+        <canvas id="mychart"></canvas>
+      </div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+        <script>
+          $(document).ready(function(){
+            mychart = createmygraf();
+            $(".container").hide();
+
+            $(".panel2").hide();
+            //Click on the calculate Z-score buttom
+            $('#btn1').on('click',function(e) {
+              $('input#height').removeClass('error');
+              $('input#Weight').removeClass('error');
+              $('#Context').removeClass('error');
+              $('#Group').removeClass('error');
+              $('input#input').removeClass('error');
+
+              //alert('Button Clicked');
+              e.preventDefault();
+              var height = $('input#height').val();
+              var weight = $('input#Weight').val();
+              var age = $('#Context').val();
+              var variable = $('#Group').val();
+              var Measured = $('input#input').val();
+
+              var BSA = 0.024265*Math.pow(weight,0.51456)*Math.pow(height,0.3964);
+
+              if(isNaN(height) || height.length == 0 || isNaN(weight) || weight.length == 0 || age == 0 || variable == 0 || isNaN(Measured) || Measured.length == 0){
+                alert("Some of the values are not validated. Please check if the height, weight, age, Group and Measured are correct. Remeber to use periods and not commas in the numbers.");
+                if(isNaN(height) || height.length == 0){
+                  //console.log("height error")
+                  $('input#height').addClass('error');
+                }
+                if(isNaN(weight) || weight.length == 0){
+                  $('input#Weight').addClass('error');
+                  //console.log("weight error")
+                }
+                if(age == 0){
+                  $('#Context').addClass('error');
+                  //console.log("age error")
+                }
+                if(variable == 0){
+                  $('#Group').addClass('error');
+                  //console.log("variable error")
+                }
+                if(isNaN(Measured) || Measured.length == 0){
+                  $('input#input').addClass('error');
+                  //console.log("Measured error")
+                }
+              
+              }else{
+                $('input#height').removeClass('error');
+                $('input#Weight').removeClass('error');
+                $('#Context').removeClass('error');
+                $('#Group').removeClass('error');
+                $('input#input').removeClass('error');
+
+                $(".panel2").show();
+                $('output#BSA').val(BSA.toFixed(3));
+                $('output#Z-score').val(calculation(age,variable,Measured,BSA)[0].toFixed(2));
+
+                $(".container").show();
+                updategraf(mychart,age,variable,Measured,BSA);
+              };
+            });
+          });
+
+          function copyToClipboard(text) {
+            var sampleTextarea = document.createElement("textarea");
+            document.body.appendChild(sampleTextarea);
+            sampleTextarea.value = text; //save main text in it
+            sampleTextarea.select(); //select textarea contenrs
+            document.execCommand("copy");
+            document.body.removeChild(sampleTextarea);
+          };
+
+          function myFunction(){
+            var copyText = document.getElementById("Z-score");
+            copyToClipboard(copyText.value);
+          };
+
+          function calculation(age,variable,Measured,BSA){
+            let value;
+            switch (variable) {
+              case "1":
+                value = LVSd_value_function(age);
+                var a1 = value[0];
+                var b1 = value[1];
+                var a2 = value[2];
+                var b2 = value[3];
+                var a3 = value[4];
+                var b3 = value[5];
+                var a4 = value[6];
+                var z = 3;
+                break;
+              case "2":
+                value = LVPWd_value_function(age);
+                var a1 = value[0];
+                var b1 = value[1];
+                var a2 = value[2];
+                var b2 = value[3];
+                var a3 = value[4];
+                var b3 = value[5];
+                var a4 = value[6];
+                var z = 2;
+                break;
+              case "3":
+                value = LVIDd_value_function(age);
+                var a1 = value[0];
+                var b1 = value[1];
+                var a2 = value[2];
+                var b2 = value[3];
+                var a3 = value[4];
+                var b3 = value[5];
+                var a4 = value[6];
+                var z = 3;
+                break;
+              case "4":
+                value = LVIDs_value_function(age);
+                var a1 = value[0];
+                var b1 = value[1];
+                var a2 = value[2];
+                var b2 = value[3];
+                var a3 = value[4];
+                var b3 = value[5];
+                var a4 = value[6];
+                var z = 3;
+                break;
+              default:
+                var a1 = 0;
+                var b1 = 0;
+                var a2 = 0;
+                var b2 = 0;
+                var a3 = 0;
+                var b3 = 0;
+                var a4 = 0;
+                var z = 0;
+            };
+            
+            var mu_BSA = a1+b1*BSA;
+            var sig_BSA = a2+b2*BSA;
+            var gam_BSA = a3+b3*BSA;
+            var the_BSA = a4;
+            var y = Measured;
+
+            //console.log(Z_score_function(y,mu_BSA,sig_BSA,gam_BSA,the_BSA));
+            var results = new Array(4).fill(0);
+            results[0] = Z_score_function(y,mu_BSA,sig_BSA,gam_BSA,the_BSA);
+            results[1] = calculation_giving_z_score(z,mu_BSA,sig_BSA,gam_BSA,the_BSA,1);
+            results[2] = calculation_giving_z_score(z,mu_BSA,sig_BSA,gam_BSA,the_BSA,-1);
+            results[3] = calculation_giving_z_score(0.01,mu_BSA,sig_BSA,gam_BSA,the_BSA,1);
+            //console.log(results[1]);
+            return results;
+          };
+
+          function calculation_giving_z_score(z,muBSA,sigBSA,gamBSA,theBSA,h){
+            //var testz1 = (z + (1/theBSA))/(1/theBSA);
+            //var testz2 = Math.pow(testz1,(1/theBSA))-1;
+            //var testz3 = Math.log(testz2*gamBSA + 1);
+            //var testz4 = testz3*sigBSA/gamBSA + muBSA;
+            
+            var testz1 = (z+1/theBSA)/(1/theBSA);
+            var testz2 = Math.pow(testz1,(1/theBSA))-1+(h/gamBSA);
+            var testz3 = Math.log(testz2/(h/gamBSA));
+            var testz4 = (testz3+muBSA*gamBSA/sigBSA)/(gamBSA/sigBSA);
+            
+            return testz4;
+          };
+          
+          function Z_score_function(y,muBSA,sigBSA,gamBSA,theBSA){
+            var test1 = gamBSA*((y-muBSA)/sigBSA);
+            var test2 = (Math.exp(test1)-1)/gamBSA;
+            var test5 = Math.abs((Math.exp(test1)-1)/gamBSA) 
+            var test3 = Math.pow(1+test5,theBSA);
+            var test4 = Math.sign(test2)*(1/theBSA)*(test3-1);
+            return test4;
+          };
+
+          function LVSd_value_function(age){
+            switch (age) {
+              case "1":
+                var a1 = 1.41;
+                var b1 = 4.47;
+                var a2 = 0.29;
+                var b2 = 0.51;
+                var a3 = -0.08;
+                var b3 = 0;
+                var a4 = 0.78;
+                break;
+              case "2":
+                var a1 = 1.45;
+                var b1 = 4.47;
+                var a2 = 0.27;
+                var b2 = 0.51;
+                var a3 = -0.13;
+                var b3 = 0;
+                var a4 = 0.78;
+                break;
+              case "3":
+                var a1 = 1.45;
+                var b1 = 4.47;
+                var a2 = 0.26;
+                var b2 = 0.51;
+                var a3 = -0.1;
+                var b3 = 0;
+                var a4 = 0.78;
+                break;
+              case "4":
+                var a1 = 1.42;
+                var b1 = 4.47;
+                var a2 = 0.27;
+                var b2 = 0.51;
+                var a3 = -0.06;
+                var b3 = 0;
+                var a4 = 0.78;
+                break;
+              default:
+                var a1 = 0;
+                var b1 = 0;
+                var a2 = 0;
+                var b2 = 0;
+                var a3 = 0;
+                var b3 = 0;
+                var a4 = 0;
+            };
+            return [a1, b1, a2, b2, a3, b3, a4];
+          };
+
+          function LVPWd_value_function(age){
+            switch (age) {
+              case "1":
+                var a1 = 1.02;
+                var b1 = 3.97;
+                var a2 = 0.24;
+                var b2 = 0.86;
+                var a3 = -0.49;
+                var b3 = 0.97;
+                var a4 = 1;
+                break;
+              case "2":
+                var a1 = 1.05;
+                var b1 = 3.97;
+                var a2 = 0.23;
+                var b2 = 0.86;
+                var a3 = -0.51;
+                var b3 = 0.97;
+                var a4 = 1;
+                break;
+              case "3":
+                var a1 = 1.09;
+                var b1 = 3.97;
+                var a2 = 0.21;
+                var b2 = 0.86;
+                var a3 = -0.47;
+                var b3 = 0.97;
+                var a4 = 1;
+                break;
+              case "4":
+                var a1 = 1.09;
+                var b1 = 3.97;
+                var a2 = 0.22;
+                var b2 = 0.86;
+                var a3 = -0.48;
+                var b3 = 0.97;
+                var a4 = 1;
+                break;
+              default:
+                var a1 = 0;
+                var b1 = 0;
+                var a2 = 0;
+                var b2 = 0;
+                var a3 = 0;
+                var b3 = 0;
+                var a4 = 0;
+            };
+            return [a1, b1, a2, b2, a3, b3, a4];
+          };
+        
+          function LVIDd_value_function(age){
+            switch (age) {
+              case "1":
+                var a1 = 10.05;
+                var b1 = 41.18;
+                var a2 = 0.81;
+                var b2 = 2.56;
+                var a3 = 0.04;
+                var b3 = 0;
+                var a4 = 0.93;
+                break;
+              case "2":
+                var a1 = 10.35;
+                var b1 = 41.18;
+                var a2 = 0.76;
+                var b2 = 2.56;
+                var a3 = 0.04;
+                var b3 = 0;
+                var a4 = 0.93;
+                break;
+              case "3":
+                var a1 = 10.59;
+                var b1 = 41.18;
+                var a2 = 0.77;
+                var b2 = 2.56;
+                var a3 = 0.03;
+                var b3 = 0;
+                var a4 = 0.93;
+                break;
+              case "4":
+                var a1 = 10.87;
+                var b1 = 41.18;
+                var a2 = 0.84;
+                var b2 = 2.56;
+                var a3 =-0.05;
+                var b3 = 0;
+                var a4 = 0.93;
+                break;
+              default:
+                var a1 = 0;
+                var b1 = 0;
+                var a2 = 0;
+                var b2 = 0;
+                var a3 = 0;
+                var b3 = 0;
+                var a4 = 0;
+            };
+            return [a1, b1, a2, b2, a3, b3, a4];
+          };
+        
+          function LVIDs_value_function(age){
+            switch (age) {
+              case "1":
+                var a1 = 6.97;
+                var b1 = 26.32;
+                var a2 = 0.66;
+                var b2 = 2.11;
+                var a3 = 0.03;
+                var b3 = 0;
+                var a4 = 0.92;
+                break;
+              case "2":
+                var a1 = 7.44;
+                var b1 = 26.32;
+                var a2 = 0.66;
+                var b2 = 2.08;
+                var a3 = 0.03;
+                var b3 = 0;
+                var a4 = 0.92;
+                break;
+              case "3":
+                var a1 = 7.70;
+                var b1 = 26.32;
+                var a2 = 0.66;
+                var b2 = 2.04;
+                var a3 = 0.03;
+                var b3 = 0;
+                var a4 = 0.92;
+                break;
+              case "4":
+                var a1 = 7.88;
+                var b1 = 26.32;
+                var a2 = 0.66;
+                var b2 = 2.10;
+                var a3 = 0.03;
+                var b3 = 0;
+                var a4 = 0.92;
+                break;
+              default:
+                var a1 = 0;
+                var b1 = 0;
+                var a2 = 0;
+                var b2 = 0;
+                var a3 = 0;
+                var b3 = 0;
+                var a4 = 0;
+            };
+            return [a1, b1, a2, b2, a3, b3, a4];
+          };
+
+          function updategraf(mychart,age,variable,Measured,BSA){
+            var labels = new Array(35).fill(0);
+            let value;
+
+            const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
+            labels = range(0.16, 0.35, 0.001);
+            labels = labels.map(a => a.toFixed(3));
+            
+            //console.log(labels);
+
+            for(var i=0;i<501;i++){
+              //i<1001
+              //labels[i-1]=i/1000;
+            };
+
+            if(variable=="2"){
+              labelname = '2 z-score away from the mean';
+              labelname2 = '-2 z-score away from the mean';
+            }else{
+              labelname = '3 z-score away from the mean';
+              labelname2 = '-3 z-score away from the mean';
+            }
+
+            const findValue = (element) => element == parseFloat(BSA.toFixed(3));
+
+            var yourPoint = new Array(labels.length).fill(NaN);
+            yourPoint[labels.findIndex(findValue)] = parseFloat(Measured);
+
+            var ZXvalues = new Array(labels.length).fill(0);
+            var MXvalues1 = new Array(labels.length).fill(0);
+            var MXvalues2 = new Array(labels.length).fill(0);
+            var MXvalues3 = new Array(labels.length).fill(0);
+          
+            for (var i=0;i<labels.length;i++){
+              ZXvalues[i] = calculation(age,variable,Measured,labels[i])[0];
+              MXvalues1[i] = calculation(age,variable,Measured,labels[i])[1];
+              MXvalues2[i] = calculation(age,variable,Measured,labels[i])[2];
+              MXvalues3[i] = calculation(age,variable,Measured,labels[i])[3];
+            }
+             
+            mychart.data.datasets[0].data = MXvalues1;
+            mychart.data.datasets[1].data = MXvalues2;
+            mychart.data.datasets[2].data = MXvalues3;
+
+            mychart.data.datasets[0].label = labelname;
+            mychart.data.datasets[1].label = labelname2;
+
+            mychart.data.datasets[3].data = yourPoint;
+
+            console.log(yourPoint);
+            console.log(labels.findIndex(findValue));
+            console.log(labels);
+            console.log(parseFloat(BSA.toFixed(3)));
+
+            switch (variable) {
+              case "1":
+                value = 'IVSd measured [mm]';
+                break;
+              case "2":
+                value = 'LVPWd measured [mm]';
+                break;
+              case "3":
+                value = 'LVIDd measured [mm]';
+                break;
+              case "4":
+                value = 'LVIDs measured [mm]';
+                break;
+              default:
+                value = 'Measured';
+            };
+            mychart.options.scales.yAxes.title.text = value;
+
+            mychart.update();
+          };
+
+          function createmygraf(){
+            const ctx = document.getElementById('mychart').getContext('2d');
+            var labels = new Array(35).fill(0);
+            var BSA = 0;
+            
+            const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
+            labels = range(0.16, 0.35, 0.001);
+
+            for(var i=1;i<501;i++){
+              //labels[i-1]=i/1000;
+            };
+
+            var ZXvalues = new Array(labels.length).fill(0);
+            var MXvalues1 = new Array(labels.length).fill(0);
+            var MXvalues2 = new Array(labels.length).fill(0);
+            var MXvalues3 = new Array(labels.length).fill(0);
+
+            const data = {
+              labels: labels,
+              datasets:[
+                {
+                  type: 'line',
+                  label: '3 z-score away from the mean',
+                  data: MXvalues1,
+                  borderColor: '#FF0000',
+                  order: 1
+                },{
+                  type: 'line',
+                  label: '-3 z-score away from the mean',
+                  data: MXvalues2,
+                  borderColor: '#FF0000',
+                  order: 2
+                },{
+                  type: 'line',
+                  label: 'Mean value of measured value',
+                  data: MXvalues3,
+                  borderColor: '#00FF00',
+                  order: 3
+                },{
+                  type: 'line',
+                  label: 'Your data point',
+                  data: BSA,
+                  borderColor: '#000000',
+                  pointRadius: 5,
+                  order: 4,
+                  showLine: false
+                }
+                // {label: 'Z scores', data: ZXvalues,  borderColor: '#FF0000',  order: 1 },
+              ],
+            };
+
+            const mychart = new Chart(ctx, {
+              type: 'line',
+              data: data,
+              options: {
+                scales: {
+                  yAxes: {
+                    type: 'linear',
+                    title: {
+                        display: true,
+                        text: 'Measured',
+                        font: {
+                            size: 20
+                        }
+                    },
+                    ticks: {
+                        precision: 0
+                    }
+                  },
+                  xAxes: {
+                    type: 'linear',
+                    title: {
+                        display: true,
+                        text: 'BSA [m\u00B2]',
+                        font: {
+                            size: 20
+                        }
+                    }
+                  } 
+                },
+                responsive: true,
+                plugins: {
+                  title: {
+                    display: true,
+                    text: (ctx) => 'Echocardiographic parameter values for different BSA',//'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
+                    font: {
+                      size: 20
+                    }
+                  },
+                  legend: {
+                    labels: {
+                      font: {
+                        size: 18
+                      }
+                    }
+                  }
+                }, 
+                elements: {
+                  point: {
+                    radius: 0
+                  }
+                }
+              },
+            });
+            return mychart;
+          };
+          
+        </script>
+</body>
+</html>
+
+
+
+<!-- C:\Users\Grati\Dropbox\Studie\Kandidat\5. Semester\Master thesis\HTML-code\index.html -->
