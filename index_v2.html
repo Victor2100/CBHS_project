@@ -365,10 +365,6 @@
           };
 
           function calculation_giving_z_score(z,muBSA,sigBSA,gamBSA,theBSA,h){
-            //var testz1 = (z + (1/theBSA))/(1/theBSA);
-            //var testz2 = Math.pow(testz1,(1/theBSA))-1;
-            //var testz3 = Math.log(testz2*gamBSA + 1);
-            //var testz4 = testz3*sigBSA/gamBSA + muBSA;
             
             var testz1 = (z+1/theBSA)/(1/theBSA);
             var testz2 = Math.pow(testz1,(1/theBSA))-1+(h/gamBSA);
