@@ -50,8 +50,25 @@
 
         <div class="panel panel info panel-margin title">
           <div class="panel-heading">
+            <h4 class="panel-title">
+              PROTOTYPE only, do not use in clinic.
+            </h4>
+          </div>
+
+          <div class="panel-heading">
+            <P1 class="panel-title">
+              The data and method used in this calculator is described in Ruth Ottilia Birgitta Vøgg's Ph.D Thesis:
+            </P1>
+          </div>
+          <div class="panel-heading">
+            <P1 class="panel-title">
+              Structural and functional cardiac abnormalities in the newborn, focus on the left ventricle and the effect of maternal pregnancy complications.
+            </P1>
+          </div>
+
+          <div class="panel-heading">
             <h3 class="panel-title">
-              Patient Info (only prototype, do not use in clinic)
+              Patient Info
             </h3>
           </div>
        
@@ -235,7 +252,7 @@
                 var a3 = value[4];
                 var b3 = value[5];
                 var a4 = value[6];
-                var z = 3;
+                var z = 2;
                 break;
               case "2":
                 value = LVPWd_value_function(age);
@@ -257,7 +274,7 @@
                 var a3 = value[4];
                 var b3 = value[5];
                 var a4 = value[6];
-                var z = 3;
+                var z = 2;
                 break;
               case "4":
                 value = LVIDs_value_function(age);
@@ -268,7 +285,7 @@
                 var a3 = value[4];
                 var b3 = value[5];
                 var a4 = value[6];
-                var z = 3;
+                var z = 2;
                 break;
               default:
                 var a1 = 0;
@@ -539,8 +556,8 @@
               labelname = '2 z-score away from the mean';
               labelname2 = '-2 z-score away from the mean';
             }else{
-              labelname = '3 z-score away from the mean';
-              labelname2 = '-3 z-score away from the mean';
+              labelname = '2 z-score away from the mean';
+              labelname2 = '-2 z-score away from the mean';
             }
 
             const findValue = (element) => element == parseFloat(BSA.toFixed(3));
@@ -617,13 +634,13 @@
               datasets:[
                 {
                   type: 'line',
-                  label: '3 z-score away from the mean',
+                  label: '2 z-score away from the mean',
                   data: MXvalues1,
                   borderColor: '#FF0000',
                   order: 1
                 },{
                   type: 'line',
-                  label: '-3 z-score away from the mean',
+                  label: '-2 z-score away from the mean',
                   data: MXvalues2,
                   borderColor: '#FF0000',
                   order: 2
